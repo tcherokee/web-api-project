@@ -1,0 +1,62 @@
+* {
+	@extend %no-margin-padding;
+	box-sizing: border-box;
+}
+
+body {
+  @extend %no-margin-padding;
+}
+
+.container {
+  max-width: 1024px;
+
+  @include brkpnt(desktop) {
+      margin: 0 auto;
+  }
+}
+
+.col-50-l {
+  @include responsive-block(left, 50%);
+}
+
+.col-50-r {
+  @include responsive-block(right, 50%);
+}
+
+.col-33-l {
+  @include responsive-block(left, 33.333%);
+}
+
+.col-33-r {
+  @include responsive-block(right, 33.333%);
+}
+
+.col-66-l {
+  @include responsive-block(left, 66.666%);
+}
+
+.col-66-r {
+  @include responsive-block(right, 66.666%);
+}
+
+.col-25-l {
+  @include responsive-block(left, 25%);
+}
+
+.col-25-r {
+  @include responsive-block(right, 25%);
+}
+
+.col-75-l {
+  @include responsive-block(left, 75%);
+}
+
+.col-75-r {
+  @include responsive-block(right, 75%);
+}
+
+.clearfix:after {
+  content:" ";
+  display:table;
+  clear:both;
+}

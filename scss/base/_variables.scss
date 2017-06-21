@@ -1,0 +1,19 @@
+/*
+  Colors
+*/
+
+
+/*
+  Font Stacks
+*/
+
+$stack-sans-serif: Helvetica, Arial, sans-serif;
+
+
+/*
+  Breakpoints
+*/
+
+$brk-point-small:  'screen and (min-width: '+ em(320) + ')';
+$brk-point-medium:  'screen and (min-width: '+ em(768) + ')';
+$brk-point-large:  'screen and (min-width: '+ em(1024) + ')';

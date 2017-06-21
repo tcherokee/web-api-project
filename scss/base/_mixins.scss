@@ -1,0 +1,37 @@
+@mixin brkpnt($device) {
+  @if $device == mobile {
+    @media #{$brk-point-small} {
+      @content;
+    }
+  }
+
+  @else if $device == tablet {
+    @media #{$brk-point-medium} {
+      @content;
+    }
+  }
+
+  @else if $device == desktop {
+    @media #{$brk-point-large} {
+      @content;
+    }
+  }
+}
+
+@mixin responsive-block ($float, $width, $brkpoint: tablet) {
+  float:none;
+  width: 100%;
+
+  & > * {
+    @if $float == "right" {
+      margin-left: em(5);
+    } @else {
+      margin-right: em(5);
+    }
+  }
+
+  @include brkpnt($brkpoint){
+    float:$float;
+    width: $width;
+  }
+}
