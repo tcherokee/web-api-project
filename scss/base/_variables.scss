@@ -1,13 +1,21 @@
 /*
   Colors
 */
+$white: #fff;
+$black: #000;
+$grey: #ccc;
 
+$blue: #3265b0;
+$red: #ee1c25;
+$yellow: #ffcc06;
 
 /*
   Font Stacks
 */
 
 $stack-sans-serif: Helvetica, Arial, sans-serif;
+$stack-roboto: 'Roboto', $stack-sans-serif;
+$stack-lucky: 'Luckiest Guy', $stack-roboto;
 
 
 /*

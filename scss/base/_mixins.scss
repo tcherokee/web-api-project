@@ -1,3 +1,7 @@
+@mixin stroke($stroke, $color) {
+  text-shadow: stroke($stroke, $color);
+}
+
 @mixin brkpnt($device) {
   @if $device == mobile {
     @media #{$brk-point-small} {

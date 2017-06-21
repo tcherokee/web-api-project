@@ -2,3 +2,35 @@
   margin: 0;
   padding: 0;
 }
+
+%skill-abilities {
+  font-size: em(14);
+  padding: em(10);
+
+  h3 {
+    text-transform: uppercase;
+    color: $blue;
+    text-align: left;
+    margin: em(15) 0;
+    font-size: em(22);
+  }
+
+  & > div {
+
+    ul {
+      list-style: none;
+      text-align: left;
+
+      li {
+        margin-bottom: em(10);
+
+        span {
+          color: $red;
+          font-weight: bold;
+          text-transform: uppercase;
+          margin-right: em(10);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+main {
+  #cards-container {
+    text-align: center;
+
+    .card {
+      display: inline-block;
+      max-width: em(300);
+      border-radius: em(10);
+      border: 1px solid $black;
+      margin: em(10);
+
+      .poke-name {
+        text-align: center;
+        padding: 0 em(10) em(20);
+        border-bottom: 1px solid darken($grey, 20%);
+
+        img {
+          margin: em(-20) 0;
+        }
+
+        h2 {
+          @include stroke(3, $blue);
+          font-family: $stack-lucky;
+          color: $yellow;
+          text-transform: uppercase;
+          font-size: em(32);
+          letter-spacing: em(3);
+        }
+      }
+
+      .poke-skills {
+        @extend %skill-abilities;
+
+        border-top: 1px solid $grey;
+        border-bottom: 1px solid darken($grey, 20%);
+
+        ul {
+          padding-bottom: em(10);
+
+          li {
+            font-family: $stack-lucky;
+
+            span {
+              font-family: $stack-roboto;
+            }
+          }
+        }
+      }
+
+      .poke-abilities {
+        @extend %skill-abilities;
+
+        border-top: 1px solid $grey;
+      }
+    }
+  }
+}
