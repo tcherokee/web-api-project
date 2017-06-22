@@ -43,15 +43,18 @@ $(document).ready(function() {
     statsHTML = divOne + divTwo;
 
     // console.log(statsHTML);
-    var promise;
+    var promises = [];
 
     $.each(profileData.abilities, function(i, index) {
-      promise = $.getJSON(index.ability.url, pokemonAbilities);
+      console.log(profileData.abilities);
+      promises.push($.getJSON(index.ability.url, pokemonAbilities));
     });
-    $.when(promise).done(function(){
-      buildFullHTML(nameHTML, statsHTML, abilityHTML);
-      console.log(abilityHTML);
+    $.when(promises[0],promises[1]).done(function(response1, response2){
+      // buildFullHTML(nameHTML, statsHTML, abilityHTML);
+      console.log(response2[0].effect_entries[0].effect);
     })
+
+    console.log(abilityHTML);
 
   }
 
