@@ -1,7 +1,7 @@
 $(document).ready(function() {
   var nameHTML;
   var statsHTML;
-  var abilityHTML = "";
+  var abilityHTML;
   var buildHTML;
   var pokemonURL = "http://pokeapi.co/api/v2/pokemon/"
   var pokemonOptions = {
@@ -12,7 +12,8 @@ $(document).ready(function() {
 
     $.each(data.results, function(i, pokemon){;
 
-      $.getJSON(pokemon.url, pokemonProfile);
+      $.getJSON(pokemon.url, pokemonProfile).done(function(){});
+
 
     }); //End Each for Pokemon
   }; // End Function
@@ -42,25 +43,52 @@ $(document).ready(function() {
 
     statsHTML = divOne + divTwo;
 
-    // console.log(statsHTML);
-    var promises = [];
+    // // console.log(statsHTML);
+    // var promises = [];
+    //
+    // // console.log(...profileData.abilities);
+    //
+    // // promises.push(...profileData.abilities);
+    // // console.log(promises[0].ability.url);
+    // var test;
+    // $.each(profileData.abilities, function(i, index){
+    //   promises.push($.getJSON(index.ability.url, pokemonAbilities));
+    // });
+    // $.when(...promises).then(function(...args){
+    //   console.log(nameHTML);
+    // });
 
-    $.each(profileData.abilities, function(i, index) {
-      console.log(profileData.abilities);
-      promises.push($.getJSON(index.ability.url, pokemonAbilities));
-    });
-    $.when(promises[0],promises[1]).done(function(response1, response2){
-      // buildFullHTML(nameHTML, statsHTML, abilityHTML);
-      console.log(response2[0].effect_entries[0].effect);
-    })
+    // console.log(...promises);
+    // $.when(...promises)
+    //   .then(function(x,y){
+    //   // console.log(nameHTML);
+    //     test = $.getJSON(x, pokemonAbilities);
+    //   })
+    //   test.done(function(test){
+    //     console.log(abilityHTML);
+    //     console.log(nameHTML);
+    //   })
 
-    console.log(abilityHTML);
+    // console.log(abilityHTML);
 
+    // console.log(promises);
+
+    abilityHTML = '';
+    pokemonAbilities(profileData.abilities);
   }
 
-  function pokemonAbilities(abilityData){
-    var abilityObj = abilityData.effect_entries[0];
-    abilityHTML += '<li><span>' + abilityData.name + '</span>' + abilityObj.effect + '</li>';
+  function pokemonAbilities(data){
+    var ability = [];
+
+    $.each(data, function(i, index) {
+      $.getJSON(index.ability.url, function(abilityData){
+        var abilityObj = abilityData.effect_entries[0];
+        ability.push('<li><span>' + abilityData.name + '</span>' + abilityObj.effect + '</li>');
+      });
+    });
+    $.when.apply($,ability).done(function(){
+      console.log(arguments);
+    })
   }
 
   function buildFullHTML(pokeName, pokeStats, pokeAbility) {
