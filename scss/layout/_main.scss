@@ -1,5 +1,15 @@
 main {
-  #cards-container {
+  #overlay {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba($black, 0.8);
+  }
+
+  #cards-container,
+  #overlay {
     text-align: center;
 
     .card {
@@ -8,11 +18,12 @@ main {
       border-radius: em(10);
       border: 1px solid $black;
       margin: em(10);
+      background: $white;
+      cursor: pointer;
 
       .poke-name {
         text-align: center;
         padding: 0 em(10) em(20);
-        border-bottom: 1px solid darken($grey, 20%);
 
         img {
           margin: em(-20) 0;
@@ -28,29 +39,39 @@ main {
         }
       }
 
-      .poke-skills {
-        @extend %skill-abilities;
+      .meta-data{
+        display: block;
+        margin-top: em(10);
+        border-top: 1px solid darken($grey, 20%);
 
-        border-top: 1px solid $grey;
-        border-bottom: 1px solid darken($grey, 20%);
+        &.hidden {
+          display: none;
+        }
 
-        ul {
-          padding-bottom: em(10);
+        .poke-skills {
+          @extend %skill-abilities;
+          border-bottom: 1px solid darken($grey, 20%);
 
-          li {
-            font-family: $stack-lucky;
+          h3 {
+            margin-top: 0;
+          }
 
-            span {
-              font-family: $stack-roboto;
+          ul {
+            padding-bottom: em(10);
+
+            li {
+              font-family: $stack-lucky;
+
+              span {
+                font-family: $stack-roboto;
+              }
             }
           }
         }
-      }
 
-      .poke-abilities {
-        @extend %skill-abilities;
-
-        border-top: 1px solid $grey;
+        .poke-abilities {
+          @extend %skill-abilities;
+        }
       }
     }
   }

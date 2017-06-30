@@ -2,14 +2,14 @@ $(document).ready(function() {
   var url = 'http://pokeapi.co/api/v2/pokemon/';
 
   var pokemonOptions = {
-    limit:5
+    limit:2
   }
 
   function getPokemonData(data){
     return Promise.all(data
               .map(url => $.getJSON(url)
                 .then(function(data){
-                  let p = Promise.resolve(getPokemonAbility(data.abilities));
+                  let p = getPokemonAbility(data.abilities);
 
                   return p.then(pokemonAbilities => [
                     data.sprites.front_shiny,
@@ -31,15 +31,14 @@ $(document).ready(function() {
                 ])))
   }
 
-  function buildHTML(pokemonData) {
-      var p = Promise.resolve(pokemonData);
+  function buildPokemonHTML(pokemonData) {
       var imageHTML;
       var nameHTML;
       var statsHTML;
       var abilityHTML;
       var fullHTML;
 
-      p.then(function(v) {
+      pokemonData.then(function(v) {
         $.each(v, function(i, index){
 
           //Build Image HTML
@@ -79,24 +78,43 @@ $(document).ready(function() {
           fullHTML += '<div class="card"><img src="images/pokemon-logo.png" class="img-r" /><div class="poke-name">';
           fullHTML += imageHTML;
           fullHTML += nameHTML;
-          fullHTML += '<div class="poke-skills clearfix"><h3>Skills</h3>';
+          fullHTML += '</div><div class="meta-data hidden"><div class="poke-skills clearfix"><h3>Skills</h3>';
           fullHTML += statsHTML;
           fullHTML += '</div>'
           fullHTML += '<div class="poke-abilities clearfix"><h3>Abilities</h3><div><ul>';
           fullHTML += abilityHTML;
-          fullHTML += '</ul></div></div>';
+          fullHTML += '</ul></div></div></div>';
 
           $('#cards-container').append(fullHTML);
 
         })
+
+        $('.card').on("click", showOverlay);
       })
   }
 
-  $.when($.getJSON(url, pokemonOptions))
+  function showOverlay() {
+    var overlay = '<div id="overlay"></div>';
+    var card = $(this).clone();
+
+    overlay = $(overlay).append(card);
+
+    $('main').append(overlay);
+
+    $('#overlay .card').on("click", function(){
+      console.log(this);
+      $('.meta-data', this).toggleClass('hidden');
+    })
+
+    $('overlay').on("click", function(){
+      $(this).remove();
+    })
+  }
+
+  $.getJSON(url, pokemonOptions)
     .then(data => data.results)
     .then(data => data
       .map(data => data.url))
     .then(getPokemonData)
-    .then(buildHTML)
-
+    .then(buildPokemonHTML)
 })
