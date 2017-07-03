@@ -39,6 +39,8 @@ $(document).ready(function() {
       var fullHTML;
 
       pokemonData.then(function(v) {
+        let buttons = "";
+
         $.each(v, function(i, index){
 
           //Build Image HTML
@@ -93,7 +95,12 @@ $(document).ready(function() {
 
         $(document).on("keyup", toggleOverlay);
 
-        $('button').on('click', sortAlphabetically);
+        buttons += '<button id="asc">Sort Pokemon Alphabetically (Ascending)</button>';
+        buttons += '<button id="desc">Sort Pokemon Alphabetically (Descending)</button>'
+
+        $('#btn-container').html(buttons);
+
+        $('button').on('click', buttonHandler);
 
       })
   }
@@ -118,11 +125,33 @@ $(document).ready(function() {
     }
   }
 
-  function sortAlphabetically() {
+  function buttonHandler() {
+
+    let btnAttr = ($(this).attr("id"));
+
+    if (btnAttr === "asc") {
+      sortAlphabetically('sort');
+    } else if (btnAttr === "desc") {
+      sortAlphabetically('reverse');
+    } else if (btnAttr === "new-cards") {
+      console.log('new');
+      drawFiveCards('new');
+    } else if (btnAttr === "shuffle-cards") {
+      console.log('shuffle');
+      drawFiveCards('shuffle');
+    } else if (btnAttr === "draw-cards") {
+      console.log('draw');
+      drawFiveCards('draw');
+    }
+
+
+  }
+
+  function sortAlphabetically(sort) {
+
 
     let itemsArray = [];
     let sortedArray;
-    let btnAttr = ($(this).attr("id"));
 
     $.each($('.card'), function(i, index){
       var item = {};
@@ -131,20 +160,18 @@ $(document).ready(function() {
       itemsArray.push(item);
     });
 
-    if (btnAttr === "asc") {
-      console.log(btnAttr);
+    if (sort === 'sort') {
       sortedArray = itemsArray.sort(function(a,b){return a.name > b.name});
-    } else if (btnAttr === "desc") {
+    } else if (sort === 'reverse') {
       sortedArray = itemsArray.reverse(function(a,b){return a.name > b.name});
     }
 
     $('#cards-container').html("");
 
-    console.log(sortedArray);
-
     $.each(sortedArray, function(i, index){
       $('#cards-container').append(index.data);
     })
+
   }
 
   function processNavLinks() {
@@ -154,7 +181,7 @@ $(document).ready(function() {
     if ($(clickedEvent).attr('id')==='playing-cards') {
       navLinks.removeClass('active');
       $(this).addClass('active')
-      drawFiveCards();
+      drawFiveCards('draw');
     } else if ($(clickedEvent).attr('id')==='pokemon-cards') {
       navLinks.removeClass('active');
       $(this).addClass('active');
@@ -165,36 +192,49 @@ $(document).ready(function() {
   function isDeckAvailable() {
     if(localStorage.getItem('deckID') === null) {
 
-      let deckURL = "https://deckofcardsapi.com/api/deck/new/";
+      let newDeckURL = "https://deckofcardsapi.com/api/deck/new/";
 
-      $.getJSON(deckURL)
-        .then(function(deckData){
-          localStorage.setItem('deckID', deckData.deck_id);
-          return deckData.deck_id;
-        })
+      return $.getJSON(newDeckURL)
+        .then(deckData => deckData.deck_id)
 
     } else {
       return localStorage.getItem('deckID');
     }
   }
 
-  function drawFiveCards() {
-    var deckID = isDeckAvailable();
-    var deckURL = 'https://deckofcardsapi.com/api/deck/' + deckID + '/draw/';
+  function drawFiveCards(apiCall) {
+    var deckID;
+    var deckURL;
+
+    deckID = isDeckAvailable();
+    deckURL = 'https://deckofcardsapi.com/api/deck/' + deckID + '/' + apiCall + '/';
+    console.log(deckID);
 
     var deckOptions = {
       count: 5
     }
 
-    console.log(deckURL);
+    if (apiCall === 'draw') {
+      $.getJSON(deckURL, deckOptions)
+        .then(buildCardsHTML)
+    } else if (apiCall === 'shuffle') {
+      $.getJSON(deckURL)
+        .then(showPopupThenDraw)
+    } else if (apiCall === 'new') {
+      localStorage.removeItem('deckID');
+      showPopupThenDraw();
+    }
+  }
 
-    $.getJSON(deckURL, deckOptions)
-      .then(buildCardsHTML)
+  function showPopupThenDraw(message) {
+    alert('this is a test');
+    drawFiveCards('draw');
   }
 
   function buildCardsHTML(data){
     let cardHTML ="";
     let numberOfCardLeft = data.remaining;
+    let buttons = "";
 
     var cards = data.cards.map(cardData => [
       cardData.suit,
@@ -207,6 +247,14 @@ $(document).ready(function() {
     })
 
     $('#cards-container').html(cardHTML);
+
+    buttons += '<button id="new-cards">New Card Deck</button>';
+    buttons += '<button id="shuffle-cards">Shuffle Deck</button>';
+    buttons += '<button id="draw-cards">Draw Five Cards</button>';
+
+    $('#btn-container').html(buttons);
+
+    $('button').on('click', buttonHandler);
   }
 
   function getPokemon() {
@@ -219,6 +267,6 @@ $(document).ready(function() {
   }
 
   getPokemon();
-  $('nav a').on('click', processNavLinks)
+  $('nav a').on('click', processNavLinks);
 
 })
