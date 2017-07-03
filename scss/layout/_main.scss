@@ -1,4 +1,5 @@
 main {
+
   #overlay {
       position: fixed;
       top: 0;
@@ -16,10 +17,14 @@ main {
       display: inline-block;
       max-width: em(300);
       border-radius: em(10);
-      border: 1px solid $black;
+      border: 1px solid $grey;
       margin: em(10);
       background: $white;
       cursor: pointer;
+
+      & > img {
+        padding: em(10) em(10) 0 em(10)
+      }
 
       .poke-name {
         text-align: center;
@@ -43,6 +48,7 @@ main {
         display: block;
         margin-top: em(10);
         border-top: 1px solid darken($grey, 20%);
+        transition: all 500ms ease-out 1s;
 
         &.hidden {
           display: none;
@@ -74,5 +80,9 @@ main {
         }
       }
     }
+  }
+
+  #btn-container {
+    text-align: center;
   }
 }

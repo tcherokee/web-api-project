@@ -5,14 +5,18 @@
 
 body {
   @extend %no-margin-padding;
+	background: $light-grey;
 }
 
+main,
+header,
 .container {
-  max-width: 1024px;
+	max-width: 1170px;
+	margin: 0 em(10);
 
-  @include brkpnt(desktop) {
-      margin: 0 auto;
-  }
+	@include brkpnt(desktop) {
+		margin: 0 auto;
+	}
 }
 
 .col-50-l {
@@ -59,4 +63,16 @@ body {
   content:" ";
   display:table;
   clear:both;
+}
+
+button {
+	@extend %box-shadow;
+
+	display: inline-block;
+	padding: em(10) em(15);
+	margin: em(20) 0;
+	font-weight: 600;
+	text-decoration: none;
+	text-transform: uppercase;
+	text-align: center;
 }
