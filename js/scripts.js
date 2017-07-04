@@ -2,7 +2,17 @@ $(document).ready(function() {
   var url = 'http://pokeapi.co/api/v2/pokemon/';
 
   var pokemonOptions = {
-    limit:2
+    limit:12
+  }
+
+  function loadingOverlay() {
+    $('main').append('<div id="loading"><div class="wrap"><div class="bounceball"></div><div class="text">NOW LOADING</div></div></div>');
+  }
+
+  function removeLoadingOverlay() {
+    $('#loading .wrap').fadeOut('slow');
+    setTimeout(function(){ $('#loading').fadeOut('slow'); }, 1000);
+    setTimeout(function(){ $('#loading').remove(); }, 2000);
   }
 
   function getPokemonData(data){
@@ -40,6 +50,7 @@ $(document).ready(function() {
 
       pokemonData.then(function(v) {
         let buttons = "";
+        $('#cards-container').html("");
 
         $.each(v, function(i, index){
 
@@ -82,12 +93,13 @@ $(document).ready(function() {
           fullHTML += nameHTML;
           fullHTML += '</div><div class="meta-data hidden"><div class="poke-skills clearfix"><h3>Skills</h3>';
           fullHTML += statsHTML;
-          fullHTML += '</div>'
+          fullHTML += '</div>';
           fullHTML += '<div class="poke-abilities clearfix"><h3>Abilities</h3><div><ul>';
           fullHTML += abilityHTML;
           fullHTML += '</ul></div></div></div>';
 
           $('#cards-container').append(fullHTML);
+          removeLoadingOverlay();
 
         })
 
@@ -96,8 +108,9 @@ $(document).ready(function() {
         $(document).on("keyup", toggleOverlay);
 
         buttons += '<button id="asc">Sort Pokemon Alphabetically (Ascending)</button>';
-        buttons += '<button id="desc">Sort Pokemon Alphabetically (Descending)</button>'
+        buttons += '<button id="desc">Sort Pokemon Alphabetically (Descending)</button>';
 
+        $('h1').html('Pokemon Trading Cards');
         $('#btn-container').html(buttons);
 
         $('button').on('click', buttonHandler);
@@ -134,13 +147,13 @@ $(document).ready(function() {
     } else if (btnAttr === "desc") {
       sortAlphabetically('reverse');
     } else if (btnAttr === "new-cards") {
-      console.log('new');
+      loadingOverlay();
       drawFiveCards('new');
     } else if (btnAttr === "shuffle-cards") {
-      console.log('shuffle');
+      loadingOverlay();
       drawFiveCards('shuffle');
     } else if (btnAttr === "draw-cards") {
-      console.log('draw');
+      loadingOverlay();
       drawFiveCards('draw');
     }
 
@@ -172,6 +185,8 @@ $(document).ready(function() {
       $('#cards-container').append(index.data);
     })
 
+    $('.card').on("click", bindOnClickEvent);
+
   }
 
   function processNavLinks() {
@@ -179,6 +194,7 @@ $(document).ready(function() {
     var navLinks = $('nav a');
 
     if ($(clickedEvent).attr('id')==='playing-cards') {
+      loadingOverlay();
       navLinks.removeClass('active');
       $(this).addClass('active')
       drawFiveCards('draw');
@@ -190,44 +206,47 @@ $(document).ready(function() {
   }
 
   function isDeckAvailable() {
-    if(localStorage.getItem('deckID') === null) {
-
-      let newDeckURL = "https://deckofcardsapi.com/api/deck/new/";
-
-      return $.getJSON(newDeckURL)
-        .then(deckData => deckData.deck_id)
-
-    } else {
-      return localStorage.getItem('deckID');
-    }
+    return $.getJSON("https://deckofcardsapi.com/api/deck/new/")
+      .then(function(deckData){
+        if(localStorage.getItem('deckID') === null) {
+          localStorage.setItem('deckID', deckData.deck_id);
+          return deckData.deck_id;
+        } else {
+          return localStorage.getItem('deckID')
+        }
+    })
   }
 
   function drawFiveCards(apiCall) {
-    var deckID;
-    var deckURL;
-
-    deckID = isDeckAvailable();
-    deckURL = 'https://deckofcardsapi.com/api/deck/' + deckID + '/' + apiCall + '/';
-    console.log(deckID);
-
-    var deckOptions = {
+    let deckID;
+    let deckURL;
+    let deckOptions = {
       count: 5
     }
 
-    if (apiCall === 'draw') {
-      $.getJSON(deckURL, deckOptions)
-        .then(buildCardsHTML)
-    } else if (apiCall === 'shuffle') {
-      $.getJSON(deckURL)
-        .then(showPopupThenDraw)
-    } else if (apiCall === 'new') {
-      localStorage.removeItem('deckID');
-      showPopupThenDraw();
-    }
+    deckID = isDeckAvailable();
+
+    deckID.then(function(data){
+
+      deckURL = 'https://deckofcardsapi.com/api/deck/' + data + '/' + apiCall + '/';
+
+      console.log(deckURL);
+
+      if (apiCall === 'draw') {
+        $.getJSON(deckURL, deckOptions)
+          .then(buildCardsHTML)
+      } else if (apiCall === 'shuffle') {
+        $.getJSON(deckURL)
+          .then(showPopupThenDraw)
+      } else if (apiCall === 'new') {
+        localStorage.removeItem('deckID');
+        showPopupThenDraw();
+      }
+    })
   }
 
   function showPopupThenDraw(message) {
-    alert('this is a test');
+    // alert('this is a test');
     drawFiveCards('draw');
   }
 
@@ -243,7 +262,7 @@ $(document).ready(function() {
     ])
 
     $.each(cards, function(i, index){
-      cardHTML += '<div class="card"><img src="' + index[2] + '" /><div class="meta-data">This card is the ' + index[1] + ' of ' + index[0] + '<br>There are ' + numberOfCardLeft + ' cards left in the deck</div></div>'
+      cardHTML += '<div class="card playing"><img src="' + index[2] + '" /><div class="meta-data hidden">This card is the ' + index[1] + ' of ' + index[0] + '<br>There are ' + numberOfCardLeft + ' cards left in the deck</div></div>'
     })
 
     $('#cards-container').html(cardHTML);
@@ -255,9 +274,17 @@ $(document).ready(function() {
     $('#btn-container').html(buttons);
 
     $('button').on('click', buttonHandler);
+
+    $('h1').html('Playing Cards');
+
+    $('.card').on("click", bindOnClickEvent);
+
+    removeLoadingOverlay();
   }
 
   function getPokemon() {
+    loadingOverlay();
+
     $.getJSON(url, pokemonOptions)
       .then(data => data.results)
       .then(data => data
