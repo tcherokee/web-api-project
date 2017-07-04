@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  var url = 'http://pokeapi.co/api/v2/pokemon/';
+  var url = 'https://pokeapi.co/api/v2/pokemon/';
 
   var pokemonOptions = {
     limit:12
