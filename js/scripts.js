@@ -107,8 +107,8 @@ $(document).ready(function() {
 
         $(document).on("keyup", toggleOverlay);
 
-        buttons += '<button id="asc">Sort Pokemon Alphabetically (Ascending)</button>';
-        buttons += '<button id="desc">Sort Pokemon Alphabetically (Descending)</button>';
+        buttons += '<button id="asc" class="btn-blue">Sort Pokemon Alphabetically (Ascending)</button>';
+        buttons += '<button id="desc" class="btn-red">Sort Pokemon Alphabetically (Descending)</button>';
 
         $('h1').html('Pokemon Trading Cards');
         $('#btn-container').html(buttons);
@@ -125,6 +125,8 @@ $(document).ready(function() {
     overlay = $(overlay).append(card);
 
     $('main').append(overlay);
+
+    $('#overlay .meta-data').removeClass("hidden")
 
     $('#overlay')
       .on("click", toggleOverlay)
@@ -174,9 +176,27 @@ $(document).ready(function() {
     });
 
     if (sort === 'sort') {
-      sortedArray = itemsArray.sort(function(a,b){return a.name > b.name});
+      sortedArray = itemsArray.sort(
+                                  function(a,b){
+                                    if(a.name < b.name) {
+                                      return -1;
+                                    } else if (a.name > b.name) {
+                                      return 1;
+                                    } else {
+                                      return 0;
+                                    }
+                                  });
     } else if (sort === 'reverse') {
-      sortedArray = itemsArray.reverse(function(a,b){return a.name > b.name});
+      sortedArray = itemsArray.reverse(
+                                  function(a,b){
+                                    if(a.name < b.name) {
+                                      return -1;
+                                    } else if (a.name > b.name) {
+                                      return 1;
+                                    } else {
+                                      return 0;
+                                    }
+                                  });
     }
 
     $('#cards-container').html("");
@@ -267,9 +287,9 @@ $(document).ready(function() {
 
     $('#cards-container').html(cardHTML);
 
-    buttons += '<button id="new-cards">New Card Deck</button>';
-    buttons += '<button id="shuffle-cards">Shuffle Deck</button>';
-    buttons += '<button id="draw-cards">Draw Five Cards</button>';
+    buttons += '<button id="new-cards" class="btn-blue">New Card Deck</button>';
+    buttons += '<button id="shuffle-cards" class="btn-red">Shuffle Deck</button>';
+    buttons += '<button id="draw-cards" class="btn-yellow">Draw Five Cards</button>';
 
     $('#btn-container').html(buttons);
 

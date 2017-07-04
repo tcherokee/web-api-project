@@ -2,6 +2,9 @@ nav {
   height: em(50);
   border-bottom: 1px solid $grey;
   text-transform: uppercase;
+  background: $green;
+  border-bottom: 1px solid darken($green, 5%);
+  color: $white;
 
   span {
     font-size: em(24);
@@ -13,19 +16,24 @@ nav {
   ul {
     text-align: right;
     padding-right: em(10);
+    font-size: 0;
 
     li {
       display: inline-block;
+      margin-left: 0 !important;
+      font-size: 16px;
 
       a {
         display: block;
         font-size: em(18);
         padding: em(13);
         text-decoration: none;
+        color: $white;
 
-        &.active {
-          background: $black;
-          color: $white;
+        &.active,
+        &:hover {
+          background: $white;
+          color: $green;
         }
       }
     }
@@ -35,4 +43,14 @@ nav {
 header {
   padding: em(20);
   text-align: center;
+
+  h1 {
+    text-transform: uppercase;
+    color: darken($green, 5%);
+    margin-bottom: 0;
+  }
+
+  span{
+    font-size: em(18);
+  }
 }

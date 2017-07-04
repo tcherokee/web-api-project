@@ -70,9 +70,39 @@ button {
 
 	display: inline-block;
 	padding: em(10) em(15);
-	margin: em(20) 0;
+	margin: em(20) em(10);
 	font-weight: 600;
 	text-decoration: none;
 	text-transform: uppercase;
 	text-align: center;
+	color: $white;
+	border: none;
+
+	&.btn {
+
+		&-red{
+			background-color: $red;
+
+			&:hover{
+				background-color: darken($red, 10%);
+			}
+		}
+
+		&-blue{
+			background-color: $blue;
+
+			&:hover{
+				background-color: darken($blue, 10%);
+			}
+		}
+
+		&-yellow{
+			background-color: $yellow;
+			color: $black;
+
+			&:hover{
+				background-color: darken($yellow, 10%);
+			}
+		}
+	}
 }
