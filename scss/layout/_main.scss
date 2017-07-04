@@ -1,12 +1,66 @@
 main {
 
-  #overlay {
+  #overlay,
+  #loading {
       position: fixed;
       top: 0;
       bottom: 0;
       left: 0;
       right: 0;
       background: rgba($black, 0.8);
+  }
+
+  #loading {
+    background: $white;
+
+    .wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .text {
+      color: $red;
+      display: inline-block;
+      margin-left: 5px;
+    }
+
+    .bounceball {
+      position: relative;
+      display: inline-block;
+      height: 37px;
+      width: em(15);
+      &:before {
+        position: absolute;
+        content: '';
+        display: block;
+        top: 0;
+        width: em(15);
+        height: em(15);
+        border-radius: 50%;
+        background-color: $red;
+        transform-origin: 50%;
+        animation: bounce 500ms alternate infinite ease;
+      }
+    }
+
+    @keyframes bounce {
+      0% {
+        top: em(30);
+        height: 5px;
+        border-radius: 60px 60px 20px 20px;
+        transform: scaleX(2);
+      }
+      35% {
+        height: em(15);
+        border-radius: 50%;
+        transform: scaleX(1);
+      }
+      100% {
+        top: 0;
+      }
+    }
   }
 
   #cards-container,
@@ -21,6 +75,22 @@ main {
       margin: em(10);
       background: $white;
       cursor: pointer;
+
+      &.playing {
+        border: none;
+        background: transparent;
+
+        img {
+          padding:0;
+          margin: 0;
+        }
+
+        .meta-data {
+          background: $white;
+          padding: em(15);
+
+        }
+      }
 
       & > img {
         padding: em(10) em(10) 0 em(10)
