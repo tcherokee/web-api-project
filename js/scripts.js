@@ -5,6 +5,17 @@ $(document).ready(function() {
     limit:12
   }
 
+  function mobileNavToggle() {
+    $(this).toggleClass('open');
+    $('nav ul').toggleClass('open');
+
+    if($('nav ul').hasClass('open')){
+      $('nav ul').slideDown();
+    } else {
+      $('nav ul').slideUp();
+    }
+  }
+
   function loadingOverlay() {
     $('main').append('<div id="loading"><div class="wrap"><div class="bounceball"></div><div class="text">NOW LOADING</div></div></div>');
   }
@@ -315,5 +326,6 @@ $(document).ready(function() {
 
   getPokemon();
   $('nav a').on('click', processNavLinks);
+  $('#mobile-btn').on('click', mobileNavToggle);
 
 })

@@ -44,3 +44,12 @@
                 0 4px 15px 0 rgba(0,0,0,0.15)
   }
 }
+
+%transition-position {
+  top: 0px;
+  transition: 1s;
+}
+
+%transition {
+  transition: 1s;
+}
