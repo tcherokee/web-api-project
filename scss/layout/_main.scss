@@ -78,6 +78,8 @@ main {
     text-align: center;
 
     .card {
+      @extend %box-shadow;
+
       display: inline-block;
       max-width: em(300);
       border-radius: em(10);
