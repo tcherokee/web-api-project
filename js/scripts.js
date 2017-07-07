@@ -114,7 +114,9 @@ $(document).ready(function() {
 
         })
 
-        $('.card').on("click", bindOnClickEvent);
+        $('.card').on("click", function(e){
+          bindOnClickEvent(e.currentTarget)
+        });
 
         $(document).on("keyup", toggleOverlay);
 
@@ -129,11 +131,14 @@ $(document).ready(function() {
       })
   }
 
-  function bindOnClickEvent() {
+  function bindOnClickEvent(cardDiv) {
     let overlay = '<div id="overlay"></div>';
-    let card = $(this).clone();
-    let previousCard = $(this).prev().clone();
-    let nextCard = $(this).next().clone();
+    let card = $(cardDiv).clone();
+    let previousCard = $(cardDiv).prev();
+    let nextCard = $(cardDiv).next();
+    let previousCardClone = previousCard.clone();
+    let nextCardClone = nextCard.clone();
+
 
     if(previousCard.length > 0){
       card = card.append('<a href="#" class="arrow-left"><</a>')
@@ -143,23 +148,28 @@ $(document).ready(function() {
       card = card.append('<a href="#" class="arrow-right">></a>')
     }
 
+    console.log($('main #overlay'));
+
     overlay = $(overlay).append(card);
 
     $('main').append(overlay);
 
+    console.log($('main #overlay'));
+
     $('#overlay .meta-data').removeClass("hidden")
 
     $('#overlay .arrow-left').on("click", function(){
-      $('#overlay .card').remove();
-      $('#overlay').append(crd);
+      $('#overlay').remove();
+      bindOnClickEvent(previousCard)
+    })
+
+    $('#overlay .arrow-right').on("click", function(){
+      $('#overlay').remove();
+      bindOnClickEvent(nextCard)
     })
 
     $('#overlay')
       .on("click", toggleOverlay)
-  }
-
-  function buildOverlay(card) {
-
   }
 
   function toggleOverlay(e){
@@ -235,7 +245,9 @@ $(document).ready(function() {
       $('#cards-container').append(index.data);
     })
 
-    $('.card').on("click", bindOnClickEvent);
+    $('.card').on("click", function(e){
+      bindOnClickEvent(e.currentTarget)
+    });
 
   }
 
@@ -327,7 +339,9 @@ $(document).ready(function() {
 
     $('h1').html('Playing Cards');
 
-    $('.card').on("click", bindOnClickEvent);
+    $('.card').on("click", function(e){
+      bindOnClickEvent(e.currentTarget)
+    });
 
     removeLoadingOverlay();
   }

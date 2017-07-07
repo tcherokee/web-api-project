@@ -167,8 +167,16 @@ main {
         top: 50%;
         transform: translateY(-50%);
         font-size: em(28);
-        padding: em(10);
+        padding: em(5);
         background: $white;
+        color: $green;
+        text-decoration: none;
+        border-radius: 5px;
+
+        &:hover {
+          background: $green;
+          color: $white;
+        }
       }
 
       .arrow-left {
