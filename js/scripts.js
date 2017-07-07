@@ -148,13 +148,9 @@ $(document).ready(function() {
       card = card.append('<a href="#" class="arrow-right">></a>')
     }
 
-    console.log($('main #overlay'));
-
     overlay = $(overlay).append(card);
 
     $('main').append(overlay);
-
-    console.log($('main #overlay'));
 
     $('#overlay .meta-data').removeClass("hidden")
 
@@ -251,7 +247,7 @@ $(document).ready(function() {
 
   }
 
-  function processNavLinks() {
+  function processNavLinks(event) {
     var clickedEvent = event.target;
     var navLinks = $('nav a');
 
@@ -291,8 +287,6 @@ $(document).ready(function() {
     deckID.then(function(data){
 
       deckURL = 'https://deckofcardsapi.com/api/deck/' + data + '/' + apiCall + '/';
-
-      console.log(deckURL);
 
       if (apiCall === 'draw') {
         $.getJSON(deckURL, deckOptions)
