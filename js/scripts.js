@@ -2,7 +2,7 @@ $(document).ready(function() {
   var url = 'https://pokeapi.co/api/v2/pokemon/';
 
   var pokemonOptions = {
-    limit:12
+    limit:3
   }
 
   function mobileNavToggle() {
@@ -130,8 +130,18 @@ $(document).ready(function() {
   }
 
   function bindOnClickEvent() {
-    var overlay = '<div id="overlay"></div>';
-    var card = $(this).clone();
+    let overlay = '<div id="overlay"></div>';
+    let card = $(this).clone();
+    let previousCard = $(this).prev().clone();
+    let nextCard = $(this).next().clone();
+
+    if(previousCard.length > 0){
+      card = card.append('<a href="#" class="arrow-left"><</a>')
+    }
+
+    if(nextCard.length > 0) {
+      card = card.append('<a href="#" class="arrow-right">></a>')
+    }
 
     overlay = $(overlay).append(card);
 
@@ -139,8 +149,17 @@ $(document).ready(function() {
 
     $('#overlay .meta-data').removeClass("hidden")
 
+    $('#overlay .arrow-left').on("click", function(){
+      $('#overlay .card').remove();
+      $('#overlay').append(crd);
+    })
+
     $('#overlay')
       .on("click", toggleOverlay)
+  }
+
+  function buildOverlay(card) {
+
   }
 
   function toggleOverlay(e){

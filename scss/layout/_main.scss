@@ -161,6 +161,23 @@ main {
           @extend %skill-abilities;
         }
       }
+
+      a[class^="arrow-"] {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: em(28);
+        padding: em(10);
+        background: $white;
+      }
+
+      .arrow-left {
+        left: -30%;
+      }
+
+      .arrow-right {
+        right: -30%;
+      }
     }
   }
 
