@@ -2,7 +2,7 @@ $(document).ready(function() {
   var url = 'https://pokeapi.co/api/v2/pokemon/';
 
   var pokemonOptions = {
-    limit:3
+    limit:8
   }
 
   function mobileNavToggle() {
